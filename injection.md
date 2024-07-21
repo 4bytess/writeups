@@ -49,6 +49,7 @@ Hacemos un escaneo de todo el rango de puertos con nmap: `nmap -p- --open -sS --
 
 **80 - TCP - HTTP**
 
+
 Hacemos un escaneo de servicios y versiones con nmap sobre los puertos abiertos: `nmap -p22,80 -sCV 172.17.0.2 -oN tcp_ports_targeted`.
 > `-p22,80` hacer el escaneo sobre el puerto 22 y el 80.
 
@@ -62,7 +63,7 @@ Primero lanzamos desde la consola el comando `whatweb http://172.17.0.2`
 ![image](https://github.com/user-attachments/assets/e1a8597a-9606-4235-afa9-2dae86bfdb69)
 
 Vemos que es un Apache 2.4.52. También vemos un campo de contraseña y una cookie de sesión, lo que significa que debe haber una base de datos y un panel de login.
-Si vemos por el navegador la raíz de la web, solo está el archivo por defecto de Ubuntu.
+En la raíz de la web solo está el archivo de Apache2 de Ubuntu de configuración.
 Probamos a hacer un fuzzing básico con gobuster: `gobuster dir -u http://172.17.0.2/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x txt,php,py`
 > `dir` fuzzing de directorios
 
@@ -90,7 +91,7 @@ Una vez logeados vemos esto:
 
 ![image](https://github.com/user-attachments/assets/cba5b31a-5c44-489f-ae00-bc9b5d5302a3)
 
-Obtenemos unas credenciales que serían dylan:KJSDFG789FGSDF78. Esto es muy útil ya que el puerto 22 del SSH está abierto, así que se puede probar a conectarse con estas contraseñas: `ssh dylan@172.17.0.2` y de contraseña "KJSDFG789FGSDF78".
+Obtenemos unas credenciales que serían dylan:KJSDFG789FGSDF78. Esto es muy útil ya que el puerto 22 del SSH está abierto, así que se puede probar a conectarse: `ssh dylan@172.17.0.2` y de contraseña "KJSDFG789FGSDF78".
 
 Y estamos dentro:
 
@@ -108,7 +109,7 @@ Vemos los siguientes archivos:
 ![image](https://github.com/user-attachments/assets/33d11eea-c946-4dd7-9af5-4e8ac1c26d07)
 
 Podemos ir buscando en [gtfobins](https://gtfobins.github.io) cada binario y ver si se puede escalar privilegios si es SUID.
-El binario `/usr/bin/env` es una vía para ganar privilegios, ya que con él se pueden ejecutar comandos, de forma que como es SUID y so propietario es root, los ejecutamos como root. Entonces para ganar una bash como root hacemos `/usr/bin/env /bin/bash -p`.
+El binario `/usr/bin/env` es una vía para ganar privilegios, ya que con él se pueden ejecutar comandos, de forma que como es SUID y su propietario es root, los ejecutamos como root. Entonces para ganar una bash como root hacemos `/usr/bin/env /bin/bash -p`.
 > `-p` lanzar la bash de forma privilegiada y tomar el UID de root en vez de seguir con el de dylan.
 
 Y así ya tenemos una bash como root:
