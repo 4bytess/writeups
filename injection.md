@@ -2,7 +2,7 @@
 
 ## RECONOCIMIENTO DE RED
 
-### ping
+### conectividad y SO
 
 Comprobamos al conectividad con la máquina: `ping -c 1 172.17.0.2`.
 > `-c 1`: solo envía 1 paquete ICMP
@@ -11,7 +11,7 @@ Comprobamos al conectividad con la máquina: `ping -c 1 172.17.0.2`.
 
 Vemos que nos llega la respuesta de la máquina, con un TTL de 64 por lo que su SO es Linux.
 
-### nmap
+### puertos y servicios
 
 Hacemos un escaneo de todo el rango de puertos con nmap: `nmap -p- --open -sS --min-rate 5000 -vvv -n -Pn 172.17.0.2 -oG tcp_ports`.
 > `-p-`: todo el rango de puertos
@@ -31,7 +31,7 @@ Hacemos un escaneo de todo el rango de puertos con nmap: `nmap -p- --open -sS --
 > `-oG tcp_ports` exportar el output en formato grepeable al archivo `tcp_ports`
 
 
-###### puertos abiertos
+#### puertos abiertos
 
 **22 - TCP - SSH**
 **80 - TCP - HTTP**
