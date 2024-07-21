@@ -15,6 +15,7 @@ Vemos que nos llega la respuesta de la máquina, con un TTL de 64 por lo que su 
 
 Hacemos un escaneo de todo el rango de puertos con nmap: `nmap -p- --open -sS --min-rate 5000 -vvv -n -Pn 172.17.0.2 -oG tcp_ports`.
 > `-p-`: todo el rango de puertos
+
 > `--open`: solo reportar los puertos abiertos
 > `-sS`: usar el método de escaneo SYN, que es más sigiloso y rápido que el normal. Requiere privilegios a nivel de sistema para enviar raw packets
 > `--min-rate 5000` enviar como mínimo 5000 paquetes por segundo
