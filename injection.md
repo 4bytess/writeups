@@ -1,11 +1,23 @@
-# INJECTION
+# INJECTION - DOCKERLABS
+
+## INFORMACiÓN Y DESPLIEGUE DE LA MÁQUINA
+
+Esta máquina es de [DockerLabs](https://dockerlabs.es)
+
+Para descargarla vas a [DockerLabs](https://dockerlabs.es) y buscas la máquina Injection. Abres el enlace de mega, descargas el zip, lo descomprimes y ejecutas `bash ./auto_deploy.sh ./injection.tar`. De esta forma se ejecutará el contendor de docker de la máquina
+
+### descripción
+
+- Dificultad: muy fácil
+- Sistema Operativo: Linux
+- Autor: El Pingüino de Mario
 
 ## RECONOCIMIENTO DE RED
 
 ### conectividad y SO
 
-Comprobamos al conectividad con la máquina: `ping -c 1 172.17.0.2`.
-> `-c 1`: solo envía 1 paquete ICMP
+Comprobamos la conectividad con la máquina: `ping -c 1 172.17.0.2`.
+> `-c 1`: solo enviar1 paquete ICMP
 
 ![image](https://github.com/user-attachments/assets/53747492-e791-4a6c-9b42-ae246908f258)
 
@@ -26,7 +38,7 @@ Hacemos un escaneo de todo el rango de puertos con nmap: `nmap -p- --open -sS --
 
 > `-n` no hacer resolución DNS
 
-> `-Pn` No hacer host discovery
+> `-Pn` no hacer host discovery
 
 > `-oG tcp_ports` exportar el output en formato grepeable al archivo `tcp_ports`
 
@@ -39,7 +51,47 @@ Hacemos un escaneo de todo el rango de puertos con nmap: `nmap -p- --open -sS --
 Hacemos un escaneo de servicios y versiones con nmap sobre los puertos abiertos: `nmap -p22,80 -sCV 172.17.0.2 -oN tcp_ports_targeted`.
 > `-p22,80` hacer el escaneo sobre el puerto 22 y el 80.
 
-> `-sCV` Escanear el servicio y la versión (`sV`) y lanzar los scripts de reconocimiento por defecto (`sC`)
+> `-sCV` escanear el servicio y la versión (`sV`) y lanzar los scripts de reconocimiento por defecto (`sC`)
 
-> `-oN tcp_ports_targeted` Exportar el output en formato nmap al archivo `tcp_ports_targeted`
+> `-oN tcp_ports_targeted` exportar el output en formato nmap al archivo `tcp_ports_targeted`
+
+## RECONOCIMIENTO WEB
+
+Primero lanzamos desde la consola el comando `whatweb http://172.17.0.2`
+![image](https://github.com/user-attachments/assets/e1a8597a-9606-4235-afa9-2dae86bfdb69)
+
+Vemos que es un Apache 2.4.52. También vemos un campo de contraseña y una cookie de sesión, lo que significa que debe haber una base de datos y un panel de login.
+Si vemos por el navegador la raíz de la web, solo está el archivo por defecto de Ubuntu.
+Probamos a hacer un fuzzing básico con gobuster: `gobuster dir -u http://172.17.0.2/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x txt,php,py`
+> `dir` fuzzing de directorios
+
+> `-u http://172.17.0.2` URL
+
+> `-w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt` diccionario
+
+> `-x txt,php,py` fuzzeamos las extensiones .txt, .php y .py.
+
+Gobuster encuentra los archivos `index.php` y `config.php`. En el index.php hay un panel de login:
+![image](https://github.com/user-attachments/assets/0dde8c96-a12a-4bc4-b9ad-d2155b2d2905)
+
+Al poner una comilla en el campo de usuario, sale un error de MariaDB. Esto nos da la información de que motor de base de datos se usa, y de que el panel de login es vulnerable a inyección SQL.
+
+## EXPLOTACIÓN WEB
+
+Para bypassear el panel de login, probamos a poner de usuario `admin' or 1=1-- -`, ya que el usuario admin suele ser un nombre común para administradores. Y de contraseña ponemos cualquier cosa.
+Al hacer esto, se consigue bypassear el panel de login ya que la query de SQL del servidor pasa de ser así:
+`login where user_password == login_password`
+a ser así:
+`login where user_passsword == login_password ' or 1=1-- -`
+de forma que siempre devuelve True.
+
+Una vez logeados vemos esto:
+![image](https://github.com/user-attachments/assets/cba5b31a-5c44-489f-ae00-bc9b5d5302a3)
+
+Obtenemos unas credenciales que serían dylan:KJSDFG789FGSDF78. Esto es muy útil ya que el puerto 22 del SSH está abierto, así que se puede probar a conectarse con estas contraseñas: `ssh dylan@172.17.0.2` y de contraseña "KJSDFG789FGSDF78".
+
+Y estamos dentro:
+![image](https://github.com/user-attachments/assets/fc0b5cce-da31-4922-a463-66178e7ae291)
+
+
 
