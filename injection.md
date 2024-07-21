@@ -74,7 +74,7 @@ Probamos a hacer un fuzzing básico con gobuster: `gobuster dir -u http://172.17
 Gobuster encuentra los archivos `index.php` y `config.php`. En el index.php hay un panel de login:
 ![image](https://github.com/user-attachments/assets/0dde8c96-a12a-4bc4-b9ad-d2155b2d2905)
 
-Al poner una comilla en el campo de usuario, sale un error de MariaDB. Esto nos da la información de que motor de base de datos se usa, y de que el panel de login es vulnerable a inyección SQL.
+Al poner una comilla en el campo de usuario, sale un error de MariaDB. Esto nos da la información de que el motor de base de datos que se usa es MariaDB, y de que el panel de login es vulnerable a inyección SQL.
 
 ## EXPLOTACIÓN WEB
 
@@ -86,11 +86,13 @@ a ser así:
 de forma que siempre devuelve True.
 
 Una vez logeados vemos esto:
+
 ![image](https://github.com/user-attachments/assets/cba5b31a-5c44-489f-ae00-bc9b5d5302a3)
 
 Obtenemos unas credenciales que serían dylan:KJSDFG789FGSDF78. Esto es muy útil ya que el puerto 22 del SSH está abierto, así que se puede probar a conectarse con estas contraseñas: `ssh dylan@172.17.0.2` y de contraseña "KJSDFG789FGSDF78".
 
 Y estamos dentro:
+
 ![image](https://github.com/user-attachments/assets/fc0b5cce-da31-4922-a463-66178e7ae291)
 
 
