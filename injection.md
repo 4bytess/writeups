@@ -95,5 +95,21 @@ Y estamos dentro:
 
 ![image](https://github.com/user-attachments/assets/fc0b5cce-da31-4922-a463-66178e7ae291)
 
+## ESCALADA DE PRIVILEGIOS
 
+Buscamos archivos con permisos SUID desde la raíz del sistema: `find / -perm -4000 2>/dev/null`.
+> `-perm -4000` buscar archivos con permisos SUID
 
+> `2>/dev/null` redirigir el los errores al `/dev/null` para no mostrarlos y eliminar el ruido.
+
+Vemos los siguientes archivos:
+
+![image](https://github.com/user-attachments/assets/33d11eea-c946-4dd7-9af5-4e8ac1c26d07)
+
+Podemos ir buscando en [gtfobins](https://gtfobins.github.io) cada binario y ver si se puede escalar privilegios si es SUID.
+El binario `/usr/bin/env` es una vía para ganar privilegios, ya que con él se pueden ejecutar comandos, de forma que como es SUID y so propietario es root, los ejecutamos como root. Entonces para ganar una bash como root hacemos `/usr/bin/env /bin/bash -p`.
+> `-p` lanzar la bash de forma privilegiada y tomar el UID de root en vez de seguir con el de dylan.
+
+Y así ya tenemos una bash como root:
+
+![image](https://github.com/user-attachments/assets/2badfe77-7e7f-4a8f-8567-9a873f71777c)
