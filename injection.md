@@ -1,6 +1,6 @@
 # INJECTION - DOCKERLABS
 
-## INFORMACiÓN Y DESPLIEGUE DE LA MÁQUINA
+## INFORMACIÓN Y DESPLIEGUE DE LA MÁQUINA
 
 Esta máquina es de [DockerLabs](https://dockerlabs.es)
 
@@ -46,6 +46,7 @@ Hacemos un escaneo de todo el rango de puertos con nmap: `nmap -p- --open -sS --
 #### puertos abiertos
 
 **22 - TCP - SSH**
+
 **80 - TCP - HTTP**
 
 Hacemos un escaneo de servicios y versiones con nmap sobre los puertos abiertos: `nmap -p22,80 -sCV 172.17.0.2 -oN tcp_ports_targeted`.
