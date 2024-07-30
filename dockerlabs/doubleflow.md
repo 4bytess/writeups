@@ -31,8 +31,11 @@ Hacemos un escaneo de todo el rango de puertos con nmap: `nmap -p- --open -sS --
 #### puertos abiertos
 
 **22 - TCP - SSH**
+
 **80 - TCP - HTTP**
+
 **39817 - TCP - UNKNOWN**
+
 
 Hacemos un escaneo de servicios y versiones con nmap sobre los puertos abiertos: `nmap -p22,80,39817 -sCV 172.17.0.2 -oN tcp_ports_targeted`.
 > `-p22,8039817` hacer el escaneo sobre el puerto 22, 80 y el 39817.
