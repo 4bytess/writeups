@@ -1,4 +1,16 @@
-# DOUBLEFLOW
+# DOUBLEFLOW - DOCKERLABS
+
+## INFORMACIÓN Y DESPLIEGUE DE LA MÁQUINA
+
+Esta máquina es de [DockerLabs](https://dockerlabs.es)
+
+Para descargarla vas a [DockerLabs](https://dockerlabs.es) y buscas la máquina Doubleflow. Abres el enlace de mega, descargas el zip, lo descomprimes y ejecutas `bash ./auto_deploy.sh ./doubleflow.tar`. De esta forma se ejecutará el contendor de docker de la máquina.
+
+### descripción
+
+- Dificultad: difícil
+- Sistema Operativo: Linux
+- Autor: Yo (4bytes)
 
 ## RECONOCIMIENTO DE RED
 
