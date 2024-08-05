@@ -59,7 +59,7 @@ Vemos que se usa un servidor vsftpd de versión 2.3.4.
 
 ## RECONOCIMIENTO/EXPLOTACIÓN SERVIDOR FTP
 
-Si buscamos en Google vsftpd 2.3.4 exploit, veremos etsa versión tiene una vulnerabilidad conocida. En uno de los resultados podemos ver un exploit en python de github: https://github.com/Hellsender01/vsftpd_2.3.4_Exploit/blob/main/exploit.py. Si vemos el código fuente del exploit, podemos entender en que consiste más o menos la vulnerabilidad. Para ser que si te intentas loguear al servidor ftp y pones al final del usuario dos puntos, por ejemplo test:, y de contraseña cualquier cosa, se abre el puerto 6200 en el servidor, y si te conectas ganas una consola. Podríamos clonarnos directamente este script para explotar el ftp, o crearnos también nuestro propio exploit ahora que entendemos la vulnerabilidad: https://github.com/4bytess/dockerlabs-scripts/blob/main/first%20hacking/ftp_exploit.py.
+Si buscamos en Google vsftpd 2.3.4 exploit, veremos esta versión tiene una vulnerabilidad conocida. En uno de los resultados podemos ver un exploit en python de github: https://github.com/Hellsender01/vsftpd_2.3.4_Exploit/blob/main/exploit.py. Si vemos el código fuente del exploit, podemos entender en que consiste más o menos la vulnerabilidad. Parece ser que si te intentas loguear al servidor ftp y pones al final del usuario dos puntos, por ejemplo test:, y de contraseña cualquier cosa, se abre el puerto 6200 en el servidor, y si te conectas ganas una consola. Podríamos clonarnos directamente este script para explotar el ftp, o crearnos también nuestro propio exploit ahora que entendemos la vulnerabilidad: https://github.com/4bytess/dockerlabs-scripts/blob/main/first%20hacking/ftp_exploit.py.
 
 Ahora ejecutamos el exploit:
 
