@@ -76,11 +76,14 @@ Encontramos el archivo qdefense.txt. Si lo cargamos en el navegador vemos esto:
 
 ![image](https://github.com/user-attachments/assets/53378837-1059-40e9-a45d-0f9688a802b8)
 
-Esto nos da mucha información. Nos da un posible usuario llamado toctoc, y además nos da la información de un posible código de port knocking, como el usuario se llama toctoc y hay 3 números que podrían ser puertos. El port knocking es una técnica en la cual un firewall establece una secuencia de puertos, y si alguien se intenta conectar en orden a esos puertos preestablecidos, se abre un puerto que antes estaba abierto. Podemos probar a hacer port knocking con esa secuencia que hemos visto en el archivo, usanos la herramienta `knock`: `knock 172.17.0.2 7000 8000 9000`. Después de ejecutar el comando hacemos otro escaneo de todo el rango de puertos para ver si se ha abierto algún puerto: `nmap -p- --open -sS --min-rate 5000 -vvv -n -Pn 172.17.0.2`:
+Esto nos da mucha información. Nos da un posible usuario llamado toctoc, y además nos da la información de un posible código de port knocking, como el usuario se llama toctoc y hay 3 números que podrían ser puertos. El port knocking es una técnica en la cual un firewall establece una secuencia de puertos, y si alguien se intenta conectar en orden a esos puertos preestablecidos, se abre un puerto que antes estaba cerrado. Podemos probar a hacer port knocking con esa secuencia que hemos visto en el archivo, usanos la herramienta `knock`: `knock 172.17.0.2 7000 8000 9000`. Después de ejecutar el comando hacemos otro escaneo de todo el rango de puertos para ver si se ha abierto algún puerto: `nmap -p- --open -sS --min-rate 5000 -vvv -n -Pn 172.17.0.2`:
 
 ![image](https://github.com/user-attachments/assets/23f5ec78-5d57-4246-a076-a9680935ed91)
 
 Y vemos que se ha abierto el puerto 22 del ssh. Ahora podemos probar fuerza bruta con el posible usuario toctoc: `hydra -l toctoc -P /usr/share/wordlists/rockyou.txt ssh://172.17.0.2`:
+> `-l toctoc` usuario toctoc
+
+> `-P /usr/share/wordlists/rockyou.txt` especificamos el diccionario
 
 ![image](https://github.com/user-attachments/assets/f2765b32-f961-4f09-b2c9-b3cd1d76cdbc)
 
