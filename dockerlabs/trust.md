@@ -49,7 +49,7 @@ Hacemos un escaneo de todo el rango de puertos con nmap: `nmap -p- --open -sS --
 **80 - TCP - HTTP**
 
 Hacemos un escaneo de servicios y versiones con nmap sobre los puertos abiertos: `nmap -p22,80 -sCV 172.18.0.2 -oN tcp_ports_targeted`.
-> `-p22,80` hacer el escaneo sobre los puertos 22 y 80.
+> `-p22,80` hacer el escaneo sobre los puertos 22 y 80
 
 > `-sCV` escanear el servicio y la versión (`sV`) y lanzar los scripts de reconocimiento por defecto (`sC`)
 
@@ -66,6 +66,13 @@ No vemos ninguna información interesante a parte de la versión de Apache, así
 ![image](https://github.com/user-attachments/assets/9d902b69-56df-41c3-aabd-56554101b5db)
 
 Vemos la web estándar de Apache2 de Debian. Como no tiene nada interesante pasamos a hacer fuzzing con `gobuster dir -u http://172.18.0.2/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x txt,php,py,html`:
+> `dir` usar el modo de fuzzing de directorios
+
+> `-u http://172.18.0.2/` la URL para fuzzear
+
+> `-w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt` el diccionario para fuzzear
+
+> `-x txt,php,py,html` para cada palabra del diccionario probamos las extensiones de archivos txt, php, py y html
 
 ![image](https://github.com/user-attachments/assets/01a69e0d-b511-44e9-bfa4-9d8cc438993c)
 
@@ -74,6 +81,9 @@ Vemos un archivo secret.php. Si lo cargamos vemos esto:
 ![image](https://github.com/user-attachments/assets/5ea94378-13c5-4c0b-8914-d00e5d61c0ea)
 
 Esto nos puede dar información de un posible usuario en la máquina que se llame Mario, así que como el puerto 22 del ssh está abierto, probamos a hacer fuerza bruta con hydra con el rockyou.txt sobre el ssh: `hydra -l mario -P /usr/share/wordlists/rockyou.txt ssh://172.18.0.2`:
+> `-l mario` indicamos el usuario
+
+> `-P /usr/share/wordlists/rockyou.txt` el diccionario
 
 ![image](https://github.com/user-attachments/assets/5bf12628-0002-4ab9-b6e5-39f5d026e0ef)
 
