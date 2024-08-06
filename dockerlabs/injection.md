@@ -4,7 +4,7 @@
 
 Esta máquina es de [DockerLabs](https://dockerlabs.es)
 
-Para descargarla vas a [DockerLabs](https://dockerlabs.es) y buscas la máquina Injection. Abres el enlace de mega, descargas el zip, lo descomprimes y ejecutas `bash ./auto_deploy.sh ./injection.tar`. De esta forma se ejecutará el contendor de docker de la máquina
+Para descargarla vas a [DockerLabs](https://dockerlabs.es) y buscas la máquina Injection. Abres el enlace de mega, descargas el zip, lo descomprimes y ejecutas `bash ./auto_deploy.sh ./injection.tar`. De esta forma se ejecutará el contendor de docker de la máquina.
 
 ### descripción
 
@@ -17,7 +17,7 @@ Para descargarla vas a [DockerLabs](https://dockerlabs.es) y buscas la máquina 
 ### conectividad y SO
 
 Comprobamos la conectividad con la máquina: `ping -c 1 172.17.0.2`.
-> `-c 1`: solo enviar1 paquete ICMP
+> `-c 1`: solo enviar 1 paquete ICMP
 
 ![image](https://github.com/user-attachments/assets/53747492-e791-4a6c-9b42-ae246908f258)
 
