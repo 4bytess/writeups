@@ -10,7 +10,7 @@ Para descargarla vas a [DockerLabs](https://dockerlabs.es) y buscas la máquina 
 
 - Dificultad: muy fácil
 - Sistema Operativo: Linux
-- Autor: 
+- Autor: Romabri
 
 ## RECONOCIMIENTO DE RED
 
@@ -71,7 +71,7 @@ Y vemos que no hay absolutamente nada. Pero si insepccionamos el código de la w
 
 ![image](https://github.com/user-attachments/assets/8edca81e-3d3d-4e19-88ef-33201927279d)
 
-## EXPLOTACIÓN WEB
+## EXPLOTACIÓN SSH
 
 Esto nos da información de dos posibles usuario a nivel de sistema: Juan y Camilo. Podemos hacer fuerza bruta por ssh con el rockyou: `hydra -l camilo -P /usr/share/wordlists/rockyou.txt ssh://172.17.0.2` y `hydra -l juan -P /usr/share/wordlists/rockyou.txt ssh://172.17.0.2`.
 > `-l camilo/juan` especificamos el usuario
