@@ -89,7 +89,7 @@ Vemos que existe. Tiene solo una imagen JPG:
 
 ### ESTEGANOGRAFÍA Y ZIP
 
-En sí, la imagen no tiene a simple vista información interesante.Podemos descargarla con `wget http://172.17.0.2/directoriotravieso/miramebien.jpg` para hacer esteganografía. Una vez la hemos descargado, intentamos sacar información escondida de la imagen: `steghide extract -sf miramebien.jpg`:
+En sí, la imagen no tiene a simple vista información interesante. Podemos descargarla con `wget http://172.17.0.2/directoriotravieso/miramebien.jpg` para hacer esteganografía. Una vez la hemos descargado, intentamos sacar información escondida de la imagen: `steghide extract -sf miramebien.jpg`:
 
 ![image](https://github.com/user-attachments/assets/06c0e40c-20cd-44ed-bf96-1d50e3e9ac9b)
 
