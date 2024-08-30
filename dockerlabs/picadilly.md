@@ -47,3 +47,47 @@ nmap -p- --open -sS --min-rate 5000 -vvv -n -Pn 172.17.0.2 -oG tcp_ports
 
 > `-oG tcp_ports` exportar el output en formato grepeable al archivo `tcp_ports`
 
+![image](https://github.com/user-attachments/assets/57808989-a8cf-4a58-8e5d-dfc8556aba8f)
+
+Están abiertos el puerto 80 y 443. Ahora lanzamos un escaneo de versiones con nmap, y también lanzamos scripts de reconocimiento estándar:
+
+```python
+nmap -p80,443 -sCV 172.17.0.2 -oN targeted
+```
+
+> `-p80,443` hacer el escaneo solo sobre estos dos puertos
+
+> `-sCV` lanzar escaneo de versiones y scripts estándar de reconocimiento
+
+> `-oN targeted` exportar el output al archivo `targeted`, en formato nmap
+
+![image](https://github.com/user-attachments/assets/f999fd7c-aabf-4757-9d07-d429fbf654c4)
+
+Podemos ver varios datos, como las versiones de Apache o algún nombre de dominio. También vemos que nos ha encontrado un archivo `backup.txt` en el servidor web del puerto 80.
+
+## RECONOCIMIENTO WEB
+
+Empezamos lanzando desde consola el comando `whatweb` sobre el puerto 80:
+
+```python
+whatweb http://172.17.0.2
+```
+
+![image](https://github.com/user-attachments/assets/005cf3cf-fbd7-4556-901b-ea8a65c06a58)
+
+Vemos que el título es `Index of /`, por lo que alomejor hay directory listing. Cargamos el servidor en el navegador:
+
+![image](https://github.com/user-attachments/assets/90de0b8f-6620-4a3f-add7-66b641b5912a)
+
+Sí que se aplica directory listing, también vemos el archivo `backup.txt` que encontró nmap:
+
+![image](https://github.com/user-attachments/assets/8b3fd0fb-3661-45dc-81e3-83fcb1fe6661)
+
+Nos da una contraseña cifrada que nos puede servir más adelante. Pero como la máquina no tiene servidor SSH no podemos usarla todavía.
+
+Pasamos al puerto 443:
+
+```python
+whatweb https://172.17.0.2
+```
+
