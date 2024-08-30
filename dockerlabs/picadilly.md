@@ -27,7 +27,7 @@ Y nos llega respuesta. Como el TTL es de 64 el sistema operativo de la máquina 
 
 Hacemos un escaneo de todo el rango de puertos con nmap:
 
-```bash
+```python
 nmap -p- --open -sS --min-rate 5000 -vvv -n -Pn 172.17.0.2 -oG tcp_ports
 ```
 
