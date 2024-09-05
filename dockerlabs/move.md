@@ -14,7 +14,7 @@ Para descargarla vas a [DockerLabs](https://dockerlabs.es) y buscas la máquina 
 
 ## ESQUEMA
 
-![move](https://github.com/user-attachments/assets/0a0cb487-d132-4a0b-b9a5-19b04768f525)
+![move](https://github.com/user-attachments/assets/c13a6c35-79cf-40c0-86b3-4364485d95c2)
 
 ## RECONOCIMIENTO DE RED
 
