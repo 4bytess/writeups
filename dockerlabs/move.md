@@ -12,6 +12,10 @@ Para descargarla vas a [DockerLabs](https://dockerlabs.es) y buscas la máquina 
 - Sistema Operativo: linux
 - Autor: El Pingüino de Mario
 
+## ESQUEMA
+
+![move](https://github.com/user-attachments/assets/0a0cb487-d132-4a0b-b9a5-19b04768f525)
+
 ## RECONOCIMIENTO DE RED
 
 ### conectividad y SO
@@ -24,7 +28,7 @@ ping -c 1 172.17.0.2
 
 ![image](https://github.com/user-attachments/assets/5f1907b2-25b6-4c1d-8d68-e2aaf43d49ec)
 
-vemos que recibimos respuesta con TTL 64, por lo que el sistema operativo seguramente sea Linux.
+Vemos que recibimos respuesta con TTL 64, por lo que el sistema operativo seguramente sea Linux.
 
 ### puertos y servicios
 
