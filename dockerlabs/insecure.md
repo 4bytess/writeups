@@ -12,7 +12,7 @@ Antes de empezar con la máquina, usamos `ping` para comprobar si tenemos conect
 ping -c 1 172.17.0.2
 ```
 
-![image](https://github.com/user-attachments/assets/66385427-64ec-4b28-bddb-ff8c1834eb77)
+![insecure](https://github.com/user-attachments/assets/03bb1605-acc8-4228-8663-ea77f0897101)
 
 Vemos que nos llega respuesta. Además, como el TTL es 64, el sistema operativo probablemente sea Linux.
 
