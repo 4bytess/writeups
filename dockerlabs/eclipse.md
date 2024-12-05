@@ -28,7 +28,7 @@ ping -c 1 172.17.0.2
 
 ![image](https://github.com/user-attachments/assets/a1179084-6908-4198-add6-afb29acdcaa5)
 
-Recibimso respuesta, con TTL 64, por lo que la máquina seguramente use Linux.
+Recibimos respuesta, con TTL 64, por lo que la máquina seguramente use Linux.
 
 ### puertos y servicios
 
